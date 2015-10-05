@@ -13,7 +13,14 @@ public class ObjectProvider {
 
     public ObjectProvider(List<InjectionBinding> bindings) {
         _injectionProvider = getInjectionProvider();
-        _injectionProvider.setBindings(bindings);
+
+        for (InjectionBinding binding : bindings) {
+            if (binding.getTo() == null) {
+                _injectionProvider.bind(binding.getFrom());
+            } else {
+                _injectionProvider.bind(binding.getFrom(), binding.getTo());
+            }
+        }
     }
 
     public ObjectProvider(InjectionProvider injectionProvider) {

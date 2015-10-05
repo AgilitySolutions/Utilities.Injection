@@ -14,10 +14,16 @@ class GuiceInjectionProviderTest extends GroovyTestCase {
         _providerWithNoBindings = new GuiceInjectionProvider();
 
         _providerWithFromOnlyBindings = new GuiceInjectionProvider();
-        _providerWithFromOnlyBindings.setBindings(getFromOnlyBindings());
+
+        for (InjectionBinding binding : getFromOnlyBindings()) {
+            _providerWithFromOnlyBindings.bind(binding.from);
+        }
 
         _providerWithFromAndToBindings = new GuiceInjectionProvider();
-        _providerWithFromAndToBindings.setBindings(getFromAndToBindings());
+
+        for (InjectionBinding binding : getFromAndToBindings()) {
+            _providerWithFromAndToBindings.bind(binding.from, binding.to);
+        }
     }
 
     private static List<InjectionBinding> getFromOnlyBindings() {

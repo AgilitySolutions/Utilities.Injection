@@ -15,10 +15,6 @@ public class GuiceInjectionProvider implements InjectionProvider {
         _bindings = new ArrayList<InjectionBinding>();
     }
 
-    public void setBindings(List<InjectionBinding> bindings) {
-        _bindings = bindings;
-    }
-
     public <T> T getInstance(Class<T> type) {
         T instance;
 
@@ -30,6 +26,16 @@ public class GuiceInjectionProvider implements InjectionProvider {
         }
 
         return instance;
+    }
+
+    public void bind(Class from) {
+        InjectionBinding injectionBinding = new InjectionBinding(from);
+        _bindings.add(injectionBinding);
+    }
+
+    public void bind(Class from, Class to) {
+        InjectionBinding injectionBinding = new InjectionBinding(from, to);
+        _bindings.add(injectionBinding);
     }
 
     private Injector createInjector() {

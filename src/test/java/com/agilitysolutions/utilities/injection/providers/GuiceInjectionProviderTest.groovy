@@ -196,4 +196,22 @@ class GuiceInjectionProviderTest extends GroovyTestCase {
         InterfaceWithMultipleDependencies instance = _providerWithNoBindings.getInstance(InterfaceWithMultipleDependencies.class);
         assertEquals(ClassWithMultipleDependencies.class, instance.getClass());
     }
+
+    // binding to object with short suffix
+    public void testGetInstanceWithShortSuffix() throws Exception {
+        WithShortSuffix instance = _providerWithNoBindings.getInstance(WithShortSuffix.class);
+        assertEquals(WithShortSuffixImpl.class, instance.getClass());
+    }
+
+    // binding to object with long suffix
+    public void testGetInstanceWithLongSuffix() throws Exception {
+        WithLongSuffix instance = _providerWithNoBindings.getInstance(WithLongSuffix.class);
+        assertEquals(WithLongSuffixImplementation.class, instance.getClass());
+    }
+
+    // binding to object with class suffix
+    public void testGetInstanceWithClassSuffix() throws Exception {
+        WithClassSuffix instance = _providerWithNoBindings.getInstance(WithClassSuffix.class);
+        assertEquals(WithClassSuffixClass.class, instance.getClass());
+    }
 }

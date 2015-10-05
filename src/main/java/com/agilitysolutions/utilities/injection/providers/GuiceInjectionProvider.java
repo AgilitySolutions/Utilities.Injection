@@ -8,7 +8,7 @@ import com.google.inject.Injector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiceInjectionProvider implements InjectionProvider {
+class GuiceInjectionProvider implements InjectionProvider {
     private List<InjectionBinding> _bindings;
 
     public GuiceInjectionProvider() {

@@ -1,14 +1,14 @@
 package com.agilitysolutions.utilities.injection.providers;
 
 import com.agilitysolutions.utilities.injection.InjectionBinding;
-import com.agilitysolutions.utilities.injection.interfaces.providers.IInjectionProvider;
+import com.agilitysolutions.utilities.injection.interfaces.providers.InjectionProvider;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiceInjectionProvider implements IInjectionProvider {
+public class GuiceInjectionProvider implements InjectionProvider {
     private List<InjectionBinding> _bindings;
 
     public GuiceInjectionProvider() {

@@ -4,7 +4,7 @@ import com.agilitysolutions.utilities.injection.InjectionBinding;
 
 import java.util.List;
 
-public interface IInjectionProvider {
+public interface InjectionProvider {
     void setBindings(List<InjectionBinding> bindings);
 
     <T> T getInstance(Class<T> type);

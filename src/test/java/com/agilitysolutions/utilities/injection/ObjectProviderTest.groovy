@@ -1,16 +1,16 @@
 package com.agilitysolutions.utilities.injection
 
-import com.agilitysolutions.utilities.injection.interfaces.providers.IInjectionProvider
+import com.agilitysolutions.utilities.injection.interfaces.providers.InjectionProvider
 import org.mockito.Mockito
 
 class ObjectProviderTest extends GroovyTestCase {
-    private IInjectionProvider _injectionProvider;
+    private InjectionProvider _injectionProvider;
     private ObjectProvider _objectProvider;
 
     void setUp() {
         super.setUp()
 
-        _injectionProvider =  Mockito.mock(IInjectionProvider.class)
+        _injectionProvider =  Mockito.mock(InjectionProvider.class)
         _objectProvider =  new ObjectProvider(_injectionProvider);
     }
 

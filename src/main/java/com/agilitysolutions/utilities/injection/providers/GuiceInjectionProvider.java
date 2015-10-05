@@ -30,17 +30,33 @@ public class GuiceInjectionProvider implements InjectionProvider {
 
     public void bind(Class from) {
         InjectionBinding injectionBinding = new InjectionBinding(from);
-        _bindings.add(injectionBinding);
+        bind(injectionBinding);
     }
 
     public void bind(Class from, Class to) {
         InjectionBinding injectionBinding = new InjectionBinding(from, to);
-        _bindings.add(injectionBinding);
+        bind(injectionBinding);
+    }
+
+    private void bind(InjectionBinding binding) {
+        if (!isIncludedInBindings(binding.getFrom())) {
+            _bindings.add(binding);
+        }
     }
 
     private Injector createInjector() {
         GuiceBindingModule bindingModule = _bindings.size() == 0 ? new GuiceBindingModule() : new GuiceBindingModule(_bindings);
 
         return Guice.createInjector(bindingModule);
+    }
+
+    private boolean isIncludedInBindings(Class type) {
+        for (InjectionBinding binding : _bindings) {
+            if (binding.getFrom() == type || binding.getTo() == type) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

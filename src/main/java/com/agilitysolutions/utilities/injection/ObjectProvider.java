@@ -2,25 +2,11 @@ package com.agilitysolutions.utilities.injection;
 
 import com.agilitysolutions.utilities.injection.interfaces.providers.InjectionProvider;
 
-import java.util.List;
-
 public class ObjectProvider {
     private final InjectionProvider _injectionProvider;
 
     public ObjectProvider() {
         _injectionProvider = getInjectionProvider();
-    }
-
-    public ObjectProvider(List<InjectionBinding> bindings) {
-        _injectionProvider = getInjectionProvider();
-
-        for (InjectionBinding binding : bindings) {
-            if (binding.getTo() == null) {
-                _injectionProvider.bind(binding.getFrom());
-            } else {
-                _injectionProvider.bind(binding.getFrom(), binding.getTo());
-            }
-        }
     }
 
     public ObjectProvider(InjectionProvider injectionProvider) {
@@ -29,6 +15,10 @@ public class ObjectProvider {
 
     public <T> T getInstance(Class<T> type) {
         return _injectionProvider.getInstance(type);
+    }
+
+    public void AddBinding(Class from, Class to) {
+        _injectionProvider.bind(from, to);
     }
 
     private InjectionProvider getInjectionProvider() {

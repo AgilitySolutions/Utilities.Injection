@@ -1,4 +1,4 @@
 package com.agilitysolutions.utilities.injection.providers.helpers;
 
-public interface InterfaceNoPublicConstructor {
+public interface InterfaceWithNoPublicConstructor {
 }

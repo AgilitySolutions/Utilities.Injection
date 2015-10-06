@@ -56,6 +56,14 @@ class GuiceInjectionProviderTest extends GroovyTestCase {
         return bindings;
     }
 
+    private static List<Pair<Class, Class>> getFromAndToBindingsWithNoPublicConstructor() {
+        ArrayList<Pair<Class, Class>> bindings = new ArrayList<Pair<Class, Class>>();
+
+        bindings.add(new Pair<Class, Class>(InterfaceWithNoPublicConstructor.class, ClassWithNoPublicConstructor.class));
+
+        return bindings;
+    }
+
     // With bindings - from only
     // binding to self with @Inject annotation
     public void testGetInstanceWithFromOnlyBindingsWithInjectAnnotation() throws Exception {
@@ -226,7 +234,26 @@ class GuiceInjectionProviderTest extends GroovyTestCase {
         Exception exception = null;
 
         try {
-            InterfaceNoPublicConstructor instance = _providerWithNoBindings.getInstance(InterfaceNoPublicConstructor.class);
+            InterfaceWithNoPublicConstructor instance = _providerWithNoBindings.getInstance(InterfaceWithNoPublicConstructor.class);
+        }
+        catch (Exception ex) {
+            exception = ex;
+        }
+
+        assertNotNull(exception);
+        assertEquals("com.google.inject.CreationException",  exception.class.typeName);
+    }
+
+    // binding to object with no public constructor with bindings
+    public void testGetInstanceWithNoPublicConstructorWithBinding() throws Exception {
+        Exception exception = null;
+
+        for (Pair<Class, Class> binding : getFromAndToBindingsWithNoPublicConstructor()) {
+            _providerWithNoBindings.bind(binding.getKey(), binding.getValue());
+        }
+
+        try {
+            InterfaceWithNoPublicConstructor instance = _providerWithNoBindings.getInstance(InterfaceWithNoPublicConstructor.class);
         }
         catch (Exception ex) {
             exception = ex;

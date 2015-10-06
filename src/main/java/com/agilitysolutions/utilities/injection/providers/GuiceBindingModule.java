@@ -3,6 +3,7 @@ package com.agilitysolutions.utilities.injection.providers;
 import com.agilitysolutions.utilities.injection.InjectionBinding;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import javafx.util.Pair;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -10,10 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 class GuiceBindingModule extends AbstractModule {
-    private final List<InjectionBinding> _bindings;
+    private final List<Pair<Class, Class>> _pairs;
 
     public GuiceBindingModule() {
-        _bindings = new ArrayList<InjectionBinding>();
+        _pairs = new ArrayList<Pair<Class, Class>>();
     }
 
     public void addBinding(Class from) {
@@ -28,12 +29,14 @@ class GuiceBindingModule extends AbstractModule {
 
     private void addBinding(InjectionBinding binding) {
         if (!isIncludedInBindings(binding.getFrom())) {
-            _bindings.add(binding);
+            Pair<Class, Class> pair = new Pair<Class, Class>(binding.getFrom(), binding.getTo());
+            _pairs.add(pair);
         }
     }
 
     protected void configure() {
-        for (InjectionBinding binding : _bindings) {
+        for (Pair<Class, Class> pair : _pairs) {
+            InjectionBinding binding = new InjectionBinding(pair.getKey(), pair.getValue());
             doBinding(binding);
         }
     }
@@ -133,8 +136,8 @@ class GuiceBindingModule extends AbstractModule {
     }
 
     private boolean isIncludedInBindings(Class type) {
-        for (InjectionBinding binding : _bindings) {
-            if (binding.getFrom() == type || binding.getTo() == type) {
+        for (Pair<Class, Class> pair : _pairs) {
+            if (pair.getKey() == type || pair.getValue() == type) {
                 return true;
             }
         }

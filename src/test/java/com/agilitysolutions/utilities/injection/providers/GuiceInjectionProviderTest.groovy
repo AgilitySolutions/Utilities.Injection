@@ -1,7 +1,7 @@
 package com.agilitysolutions.utilities.injection.providers
 
-import com.agilitysolutions.utilities.injection.InjectionBinding
 import com.agilitysolutions.utilities.injection.providers.helpers.*
+import javafx.util.Pair
 
 class GuiceInjectionProviderTest extends GroovyTestCase {
     private GuiceInjectionProvider _providerWithNoBindings;
@@ -15,43 +15,43 @@ class GuiceInjectionProviderTest extends GroovyTestCase {
 
         _providerWithFromOnlyBindings = new GuiceInjectionProvider();
 
-        for (InjectionBinding binding : getFromOnlyBindings()) {
-            _providerWithFromOnlyBindings.bind(binding.from);
+        for (Pair<Class, Class> binding : getFromOnlyBindings()) {
+            _providerWithFromOnlyBindings.bind(binding.getKey());
         }
 
         _providerWithFromAndToBindings = new GuiceInjectionProvider();
 
-        for (InjectionBinding binding : getFromAndToBindings()) {
-            _providerWithFromAndToBindings.bind(binding.from, binding.to);
+        for (Pair<Class, Class> binding : getFromAndToBindings()) {
+            _providerWithFromAndToBindings.bind(binding.getKey(), binding.getValue());
         }
     }
 
-    private static List<InjectionBinding> getFromOnlyBindings() {
-        ArrayList<InjectionBinding> bindings = new ArrayList<InjectionBinding>();
+    private static List<Pair<Class, Class>> getFromOnlyBindings() {
+        ArrayList<Pair<Class, Class>> bindings = new ArrayList<Pair<Class, Class>>();
 
-        bindings.add(new InjectionBinding(ClassWithInjectAnnotation.class));
-        bindings.add(new InjectionBinding(ClassWithNoConstructor.class));
-        bindings.add(new InjectionBinding(ClassWithDefaultConstructor.class));
-        bindings.add(new InjectionBinding(ClassWithAlternateConstructorWithDifficultlyBoundDependencies.class));
-        bindings.add(new InjectionBinding(ClassWithAlternateConstructorWithEasilyBoundDependencies.class));
-        bindings.add(new InjectionBinding(InterfaceWithImplementedByAnnotation.class));
-        bindings.add(new InjectionBinding(InterfaceWithoutImplementedByAnnotation.class));
-        bindings.add(new InjectionBinding(ClassWithMultipleDependencies.class));
+        bindings.add(new Pair<Class, Class>(ClassWithInjectAnnotation.class, null));
+        bindings.add(new Pair<Class, Class>(ClassWithNoConstructor.class, null));
+        bindings.add(new Pair<Class, Class>(ClassWithDefaultConstructor.class, null));
+        bindings.add(new Pair<Class, Class>(ClassWithAlternateConstructorWithDifficultlyBoundDependencies.class, null));
+        bindings.add(new Pair<Class, Class>(ClassWithAlternateConstructorWithEasilyBoundDependencies.class, null));
+        bindings.add(new Pair<Class, Class>(InterfaceWithImplementedByAnnotation.class, null));
+        bindings.add(new Pair<Class, Class>(InterfaceWithoutImplementedByAnnotation.class, null));
+        bindings.add(new Pair<Class, Class>(ClassWithMultipleDependencies.class, null));
 
         return bindings;
     }
 
-    private static List<InjectionBinding> getFromAndToBindings() {
-        ArrayList<InjectionBinding> bindings = new ArrayList<InjectionBinding>();
+    private static List<Pair<Class, Class>> getFromAndToBindings() {
+        ArrayList<Pair<Class, Class>> bindings = new ArrayList<Pair<Class, Class>>();
 
-        bindings.add(new InjectionBinding(InterfaceWithInjectAnnotation.class, ClassWithInjectAnnotation.class));
-        bindings.add(new InjectionBinding(InterfaceWithNoConstructor.class, ClassWithNoConstructor.class));
-        bindings.add(new InjectionBinding(InterfaceWithDefaultConstructor.class, ClassWithDefaultConstructor.class));
-        bindings.add(new InjectionBinding(InterfaceWithAlternateConstructorWithDifficultlyBoundDependencies.class, ClassWithAlternateConstructorWithDifficultlyBoundDependencies.class));
-        bindings.add(new InjectionBinding(InterfaceWithAlternateConstructorWithEasilyBoundDependencies.class, ClassWithAlternateConstructorWithEasilyBoundDependencies.class));
-        bindings.add(new InjectionBinding(InterfaceWithImplementedByAnnotation.class, ClassWithImplementedByAnnotation.class));
-        bindings.add(new InjectionBinding(InterfaceWithoutImplementedByAnnotation.class, ClassWithoutImplementedByAnnotation.class));
-        bindings.add(new InjectionBinding(InterfaceWithMultipleDependencies.class, ClassWithMultipleDependencies.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithInjectAnnotation.class, ClassWithInjectAnnotation.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithNoConstructor.class, ClassWithNoConstructor.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithDefaultConstructor.class, ClassWithDefaultConstructor.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithAlternateConstructorWithDifficultlyBoundDependencies.class, ClassWithAlternateConstructorWithDifficultlyBoundDependencies.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithAlternateConstructorWithEasilyBoundDependencies.class, ClassWithAlternateConstructorWithEasilyBoundDependencies.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithImplementedByAnnotation.class, ClassWithImplementedByAnnotation.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithoutImplementedByAnnotation.class, ClassWithoutImplementedByAnnotation.class));
+        bindings.add(new Pair<Class, Class>(InterfaceWithMultipleDependencies.class, ClassWithMultipleDependencies.class));
 
         return bindings;
     }

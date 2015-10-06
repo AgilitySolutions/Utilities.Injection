@@ -1,6 +1,5 @@
 package com.agilitysolutions.utilities.injection.providers;
 
-import com.agilitysolutions.utilities.injection.InjectionBinding;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import javafx.util.Pair;
@@ -11,51 +10,49 @@ import java.util.Arrays;
 import java.util.List;
 
 class GuiceBindingModule extends AbstractModule {
-    private final List<Pair<Class, Class>> _pairs;
+    private final List<Pair<Class, Class>> _bindings;
 
     public GuiceBindingModule() {
-        _pairs = new ArrayList<Pair<Class, Class>>();
+        _bindings = new ArrayList<Pair<Class, Class>>();
     }
 
     public void addBinding(Class from) {
-        InjectionBinding binding = new InjectionBinding(from);
-        addBinding(binding);
+        Pair<Class, Class> pair = new Pair<Class, Class>(from, null);
+        addBinding(pair);
     }
 
     public void addBinding(Class from, Class to) {
-        InjectionBinding binding = new InjectionBinding(from, to);
-        addBinding(binding);
+        Pair<Class, Class> pair = new Pair<Class, Class>(from, to);
+        addBinding(pair);
     }
 
-    private void addBinding(InjectionBinding binding) {
-        if (!isIncludedInBindings(binding.getFrom())) {
-            Pair<Class, Class> pair = new Pair<Class, Class>(binding.getFrom(), binding.getTo());
-            _pairs.add(pair);
+    private void addBinding(Pair<Class, Class> binding) {
+        if (!isIncludedInBindings(binding.getKey())) {
+            _bindings.add(binding);
         }
     }
 
     protected void configure() {
-        for (Pair<Class, Class> pair : _pairs) {
-            InjectionBinding binding = new InjectionBinding(pair.getKey(), pair.getValue());
+        for (Pair<Class, Class> binding : _bindings) {
             doBinding(binding);
         }
     }
 
-    private void doBinding(InjectionBinding binding) {
+    private void doBinding(Pair<Class, Class> binding) {
         Constructor constructor = getConstructorToBindTo(getClassToUse(binding));
 
         if (constructor != null) {
-            bind(binding.getFrom()).toConstructor(constructor);
+            bind(binding.getKey()).toConstructor(constructor);
             bindConstructorParameterTypes(constructor);
-        } else if (binding.getTo() == null) {
-            bind(binding.getFrom());
+        } else if (binding.getValue() == null) {
+            bind(binding.getKey());
         } else {
-            bind(binding.getFrom()).to(binding.getTo());
+            bind(binding.getKey()).to(binding.getValue());
         }
     }
 
-    private Class getClassToUse(InjectionBinding binding) {
-        Class classToUse = binding.getTo() == null ? binding.getFrom() : binding.getTo();
+    private Class getClassToUse(Pair<Class, Class> binding) {
+        Class classToUse = binding.getValue() == null ? binding.getKey() : binding.getValue();
 
         if (classToUse.isInterface()) {
             classToUse = getImplementationOfInterface(classToUse);
@@ -130,14 +127,15 @@ class GuiceBindingModule extends AbstractModule {
     private void bindConstructorParameterTypes(Constructor constructor) {
         for (Class type : constructor.getParameterTypes()) {
             if (!isIncludedInBindings(type)) {
-                doBinding(new InjectionBinding(type));
+                Pair<Class, Class> pair = new Pair<Class, Class>(type, null);
+                doBinding(pair);
             }
         }
     }
 
     private boolean isIncludedInBindings(Class type) {
-        for (Pair<Class, Class> pair : _pairs) {
-            if (pair.getKey() == type || pair.getValue() == type) {
+        for (Pair<Class, Class> binding : _bindings) {
+            if (binding.getKey() == type || binding.getValue() == type) {
                 return true;
             }
         }

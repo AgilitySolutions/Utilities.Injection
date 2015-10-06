@@ -5,25 +5,34 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 class GuiceBindingModule extends AbstractModule {
     private final List<InjectionBinding> _bindings;
 
-    public GuiceBindingModule(List<InjectionBinding> bindings) {
-        _bindings = bindings;
+    public GuiceBindingModule() {
+        _bindings = new ArrayList<InjectionBinding>();
     }
 
-    public GuiceBindingModule() {
-        _bindings = null;
+    public void addBinding(Class from) {
+        InjectionBinding binding = new InjectionBinding(from);
+        addBinding(binding);
+    }
+
+    public void addBinding(Class from, Class to) {
+        InjectionBinding binding = new InjectionBinding(from, to);
+        addBinding(binding);
+    }
+
+    private void addBinding(InjectionBinding binding) {
+        if (!isIncludedInBindings(binding.getFrom())) {
+            _bindings.add(binding);
+        }
     }
 
     protected void configure() {
-        if (_bindings == null) {
-            return;
-        }
-
         for (InjectionBinding binding : _bindings) {
             doBinding(binding);
         }

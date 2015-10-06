@@ -220,4 +220,19 @@ class GuiceInjectionProviderTest extends GroovyTestCase {
         WithClassSuffix instance = _providerWithNoBindings.getInstance(WithClassSuffix.class);
         assertEquals(WithClassSuffixClass.class, instance.getClass());
     }
+
+    // binding to object with no public constructor
+    public void testGetInstanceWithNoPublicConstructor() throws Exception {
+        Exception exception = null;
+
+        try {
+            InterfaceNoPublicConstructor instance = _providerWithNoBindings.getInstance(InterfaceNoPublicConstructor.class);
+        }
+        catch (Exception ex) {
+            exception = ex;
+        }
+
+        assertNotNull(exception);
+        assertEquals("com.google.inject.CreationException",  exception.class.typeName);
+    }
 }

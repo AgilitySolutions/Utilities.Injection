@@ -38,6 +38,7 @@ class GuiceBindingModule extends AbstractModule {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void doBinding(Pair<Class, Class> binding) {
         Constructor constructor = getConstructorToBindTo(getClassToUse(binding));
 

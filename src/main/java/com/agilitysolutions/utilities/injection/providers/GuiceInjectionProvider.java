@@ -4,7 +4,7 @@ import com.agilitysolutions.utilities.injection.interfaces.providers.InjectionPr
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-class GuiceInjectionProvider implements InjectionProvider {
+public class GuiceInjectionProvider implements InjectionProvider {
     private GuiceBindingModule _bindingModule;
 
     public GuiceInjectionProvider() {

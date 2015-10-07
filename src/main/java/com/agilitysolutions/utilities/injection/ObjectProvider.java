@@ -1,6 +1,7 @@
 package com.agilitysolutions.utilities.injection;
 
 import com.agilitysolutions.utilities.injection.interfaces.providers.InjectionProvider;
+import com.agilitysolutions.utilities.injection.providers.GuiceInjectionProvider;
 
 public class ObjectProvider {
     private final InjectionProvider _injectionProvider;
@@ -17,24 +18,11 @@ public class ObjectProvider {
         return _injectionProvider.getInstance(type);
     }
 
-    public void AddBinding(Class from, Class to) {
+    public void addBinding(Class from, Class to) {
         _injectionProvider.bind(from, to);
     }
 
     private InjectionProvider getInjectionProvider() {
-        String providerClassName = "com.agilitysolutions.utilities.injection.providers.GuiceInjectionProvider";
-
-        try {
-            Class providerClass = Class.forName(providerClassName);
-            return (InjectionProvider) providerClass.newInstance();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-        return null;
+        return new GuiceInjectionProvider();
     }
 }
